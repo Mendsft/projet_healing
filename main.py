@@ -49,11 +49,15 @@ class Pharmacie (Lieu):
         super().__init__(nom, salle)
         self.medoc= medoc
         self.caisse = caisse
+    def __repr__(self):
+        return self.nom
 class Medoc():
     def __init__(self,nom,maladie,prix=float):
         self.nom = nom
         self.maladie = maladie
         self.prix = prix 
+    def __repr__(self):
+        return self.nom
         
         
         
