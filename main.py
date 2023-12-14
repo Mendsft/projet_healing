@@ -33,15 +33,35 @@ class Docteur (Patients):
     def recevoir (self,_cabinet,_attente,_patient):
         _cabinet.salle.append(_patient)
         _attente.salle.remove(_patient)
+        _cabinet.patient_in.append(_patient)
         print(f"bonjour très cher {_patient} ! ")
         
-    def diagnostic(self):
-        pass
-    def prescrire (self):
-        pass
-    def get_payed (self):
-        pass
+    def diagnostic(self,_cabinet,_patient):
+        print(f"{docteur} : je vais vous diagnostiquer ! ")
+        print(f"{_cabinet.patient_in} : d'accord docteur !")
+        print("quelques minutes plus tard ...")
+        print(f"{docteur} : je vois que vous avez une : {_patient.maladie}")
+        
+    def get_payed (self,_patient):
+        if _patient.argent < 50 :
+            print(f"{docteur}ah désolé vous avez pas assez d'argent ")
+        else:
+            print(f"{docteur} : ca vous fera 50 €")
+            self.argent += 50
+            print(self.argent)
     
+    def prescrire (self,_patient,_grille):
+        for i in _grille:
+            if _patient.maladie == i.maladie :
+                print(f"{docteur} : je vais vous prescrire pour votre traitement   : {i.nom}")
+                _patient.etat = "en traitement"
+                
+    def sortir(self,_cabinet,_patient):
+        print(f"{docteur} : Bon je pense que nous en avons fini, je vous souhaite bon rétablissement et oubliez pas de prendre votre traitement à la pharmacie ! ")
+        _cabinet.salle.remove(_patient)
+        _cabinet.patient_out.append(_patient)
+        _cabinet.patient_in.remove(_patient)
+
     def __repr__(self):
         return self.nom
         
@@ -95,9 +115,15 @@ found = Medoc("found","syntaxError",20)
 salle_attente = Lieu("Salle d'attente",[ben,optimus,sangoku,darthvader,semicolon])
 cabinet = Cabinet("cabinet ","",[docteur,chat])
 
+grille = [bien_indente,save,check,ventoline,found]
 
 print(salle_attente.salle)
 print(cabinet.salle)
 docteur.recevoir(cabinet,salle_attente,sangoku)
 print(salle_attente.salle)
 print(cabinet.salle)
+docteur.diagnostic(cabinet,sangoku)
+docteur.get_payed(sangoku)
+docteur.prescrire(sangoku,grille)
+
+docteur.sortir(cabinet,sangoku)
