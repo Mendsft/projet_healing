@@ -8,12 +8,26 @@ class Patients ():
         self.etat = etat 
         self.poche = poche
         
-    def se_deplacer(self):
-        pass
-    def prendre(self):
-        pass
-    def payer(self):
-        pass
+    def se_deplacer(self,_lieu_depart,_lieu_arrive):
+        print(f"{self.nom} : je me trouve à {_lieu_depart} aller cherche mes medocs à la {_lieu_arrive} ")
+        _lieu_depart.salle.remove(self)
+        _lieu_arrive.salle.append(self)
+        
+    def prendre_payer(self,_pharmacie,_grille,):
+        print(f"{self} : bonjour, je suis venu chercher mon traitement , j'ai {self.maladie}")
+        for i in _grille :
+            if self.maladie == i.maladie :
+                print(f"{_pharmacie.salle[0]} : Bonjour, je vois, je vais vous donner votre médoc qui est {i.nom}")
+                print(f"{_pharmacie.salle[0]} : ca vous fera {i.prix} € ")
+                
+                if self.argent < i.prix :
+                    print(f"{_pharmacie.salle[0]} : ah désole vous avez pas assez d'argent ... ")
+                else:
+                    print(f"{self} : Voici svp !")
+                    print(f"{_pharmacie.salle[0]} : Merci,passez une bonne journée")
+                    self.argent -=i.prix
+                    _pharmacie.caisse +=i.prix           
+ 
     
     def __repr__(self):
         return self.nom
@@ -107,6 +121,7 @@ darthvader = Patients("darthvader","azamatique","malade",110)
 semicolon = Patients("semicolon","syntaxError","malade",60)
 chat = Chat("chat")
 docteur = Docteur("docteur","bonne santé","sain", 20000)
+pharmacien = Patients("pharmacien","","bonne santé",)
 
 # medoc 
 bien_indente = Medoc("bien indenté","mal indenté",60)
@@ -114,11 +129,14 @@ save = Medoc("save","unsave",100)
 check = Medoc("check","404",35)
 ventoline = Medoc("ventoline","azmatique",40)
 found = Medoc("found","syntaxError",20)
+
+grille = [bien_indente,save,check,ventoline,found]
+
 # lieu 
 salle_attente = Lieu("Salle d'attente",[ben,optimus,sangoku,darthvader,semicolon])
 cabinet = Cabinet("cabinet ","",[docteur,chat])
+pharmacie = Pharmacie("pharmacie",grille,100,["pharmacienne"])
 
-grille = [bien_indente,save,check,ventoline,found]
 
 print(salle_attente.salle)
 print(cabinet.salle)
@@ -130,6 +148,7 @@ docteur.get_payed(sangoku)
 docteur.prescrire(sangoku,grille)
 
 docteur.sortir(cabinet,sangoku,salle_attente)
-print(salle_attente.salle)
+sangoku.se_deplacer(salle_attente,pharmacie)
+sangoku.prendre_payer(pharmacie,grille)
 
 
