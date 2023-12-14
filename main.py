@@ -1,4 +1,5 @@
 import time
+import threading
 # ------------------- class ------------------------
 class Patients ():
     def __init__(self,nom,maladie,etat,argent=float,poche=[]):
@@ -22,13 +23,16 @@ class Patients ():
                 
                 if self.argent < i.prix :
                     print(f"{_pharmacie.salle[0]} : ah désole vous avez pas assez d'argent ... ")
+                    self.etat = "mourrant..."
                 else:
                     print(f"{self} : Voici svp !")
                     print(f"{_pharmacie.salle[0]} : Merci,passez une bonne journée")
                     self.argent -=i.prix
-                    _pharmacie.caisse +=i.prix           
- 
-    
+                    _pharmacie.caisse +=i.prix  
+                       
+                    self.poche.append(i)
+                    self.etat = "entrain de se soigner"
+
     def __repr__(self):
         return self.nom
     
@@ -86,6 +90,7 @@ class Lieu ():
     def __init__(self,nom,salle = []):
         self.nom = nom
         self.salle = salle 
+        
     def __repr__(self):
         return self.nom
 class Cabinet (Lieu):
@@ -100,6 +105,7 @@ class Pharmacie (Lieu):
         super().__init__(nom, salle)
         self.medoc= medoc
         self.caisse = caisse
+        
     def __repr__(self):
         return self.nom
 class Medoc():
@@ -107,13 +113,14 @@ class Medoc():
         self.nom = nom
         self.maladie = maladie
         self.prix = prix 
+        
     def __repr__(self):
         return self.nom
         
-        
-        
+
 # ------------------ Instanciation ----------------
 # personnage 
+
 ben = Patients("ben","mal indenté","malade",100)
 optimus = Patients("optimus","unsave","malade",200)
 sangoku = Patients("sangoku","404","malade",80)
@@ -122,6 +129,8 @@ semicolon = Patients("semicolon","syntaxError","malade",60)
 chat = Chat("chat")
 docteur = Docteur("docteur","bonne santé","sain", 20000)
 pharmacien = Patients("pharmacien","","bonne santé",)
+
+patients = [ben,optimus,sangoku,darthvader,semicolon]
 
 # medoc 
 bien_indente = Medoc("bien indenté","mal indenté",60)
@@ -136,6 +145,17 @@ grille = [bien_indente,save,check,ventoline,found]
 salle_attente = Lieu("Salle d'attente",[ben,optimus,sangoku,darthvader,semicolon])
 cabinet = Cabinet("cabinet ","",[docteur,chat])
 pharmacie = Pharmacie("pharmacie",grille,100,["pharmacienne"])
+cimetierre = Lieu("cimetière",["Fossoyeur"])
+
+# fonction miauler 
+def miauler ():
+    for i in range (100):
+        time.sleep(2)
+        print("*miaouwwww*")
+
+#chats :
+miauler = threading.Thread(target= miauler)
+miauler.start()
 
 
 print(salle_attente.salle)
@@ -149,6 +169,11 @@ docteur.prescrire(sangoku,grille)
 
 docteur.sortir(cabinet,sangoku,salle_attente)
 sangoku.se_deplacer(salle_attente,pharmacie)
+print(pharmacie.caisse,sangoku.argent)
+print(sangoku.poche)
 sangoku.prendre_payer(pharmacie,grille)
+print(pharmacie.caisse,sangoku.argent)
+print(sangoku.poche)
+
 
 
