@@ -45,6 +45,8 @@ class Docteur (Patients):
     def get_payed (self,_patient):
         if _patient.argent < 50 :
             print(f"{docteur}ah désolé vous avez pas assez d'argent ")
+            print(f"{_patient} oh .. pouvez-vous me faire une faveur svp ? ")
+            
         else:
             print(f"{docteur} : ca vous fera 50 €")
             self.argent += 50
@@ -56,11 +58,12 @@ class Docteur (Patients):
                 print(f"{docteur} : je vais vous prescrire pour votre traitement   : {i.nom}")
                 _patient.etat = "en traitement"
                 
-    def sortir(self,_cabinet,_patient):
+    def sortir(self,_cabinet,_patient,_attente):
         print(f"{docteur} : Bon je pense que nous en avons fini, je vous souhaite bon rétablissement et oubliez pas de prendre votre traitement à la pharmacie ! ")
         _cabinet.salle.remove(_patient)
         _cabinet.patient_out.append(_patient)
         _cabinet.patient_in.remove(_patient)
+        _attente.salle.append(_patient)
 
     def __repr__(self):
         return self.nom
@@ -126,4 +129,7 @@ docteur.diagnostic(cabinet,sangoku)
 docteur.get_payed(sangoku)
 docteur.prescrire(sangoku,grille)
 
-docteur.sortir(cabinet,sangoku)
+docteur.sortir(cabinet,sangoku,salle_attente)
+print(salle_attente.salle)
+
+
