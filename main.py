@@ -18,17 +18,19 @@ class Patients ():
         _lieu_arrive.salle.append(self)
         
     def prendre_payer(self,_pharmacie,_grille,):
-        print(f"{self} : bonjour, je suis venu chercher mon traitement , j'ai {self.maladie}")
+        print(f"{self} : bonjour, je suis venu chercher mon traitement , j'ai  ma prescription ")
         
         for i in _grille :
             if self.maladie == i.maladie :
-                print(i.maladie)
                 print(display_traitment())
-                print(f"{_pharmacie.salle[0]} : Bonjour, je vois, je vais vous donner votre médoc qui est {i.nom}")
-                print(f"{_pharmacie.salle[0]} : ca vous fera {i.prix} € ")
+                print(f"{_pharmacie.salle[0]} : Bonjour, je vois, je vais vous donner votre médoc qui est {i.nom}\n")
+                print(f"{_pharmacie.salle[0]} : ca vous fera {i.prix} € \n")
+                print(f"{self} : D'accord je vais voir ce que j'ai \n")
                 
                 if self.argent < i.prix :
-                    print(f"{_pharmacie.salle[0]} : ah désole vous avez pas assez d'argent ... ")
+                    print(f"{self} : AH .. Désole je n'ai pas assez .. \n")
+                    
+                    print(f"{_pharmacie.salle[0]} : Malheureusement je ne peux vous donner votre medoc ds ... \n")
                     self.etat = "mourrant..."
                     
                 elif self.argent >= i.prix:
@@ -47,9 +49,26 @@ class Patients ():
                 jour_meurt=random.randint(0, 100)
                 
                 print(f"Jour : {jour_meurt}")
-                print(f"{i.nom} : Je me sens pas très bien ...")
+                print(f"{i.nom} : Je me sens pas très bien ... ")
                 i.etat = "mort"
-
+                
+    def guerir(self):
+        for i in patients:
+            if i.etat == "entrain de se soigner":
+                jour_gueris=random.randint(0, 10)
+                
+                print(f"Jour : {jour_gueris}")
+                print(f"{i.nom} : Je me sens extremement biengg")
+                i.etat = "guéris"
+    
+    def enterrer(self):
+        for i in patients :
+            if i.etat == "mort":
+                print(f"c'était qln un de bien .... *bruit de pelle ")
+                i.etat = "enterré"
+                i.argent = 0
+                i.maladie = ""
+                
     def __repr__(self):
         return self.nom
     
@@ -176,6 +195,11 @@ cimetierre = Lieu("cimetière",["Fossoyeur"])
 # #chats :
 # miauler = threading.Thread(target= miauler)
 # miauler.start()
+# def verif (_input):
+
+            
+        
+
 def display_patient():
     print("")
     print("Liste des patients")
@@ -187,7 +211,6 @@ def display_patient():
         header.append(content)
     table = tabulate(header,headers='firstrow',tablefmt='grid')
     return table
-    
     
 def dislay_cabinet():
     print("")
@@ -224,13 +247,14 @@ def display_traitment ():
     return ds_diagnos
 
 
-def medecin (_cabinet,_salle,_patient,_grille,_pharmacie):
+def main(_cabinet,_salle,_patient,_grille,_pharmacie):
 
     print(display_patient())
+    print("")
     while True :
         if len(_salle.salle) != 0 :
 
-            _patient = str(input(f"Entrez le patient que vous voulez faire rentrer dans le cabinet : {_salle.salle} :"))
+            _patient = str(input(f"Entrez le patient que vous voulez faire rentrer dans le cabinet : {_salle.salle} : "))
             for i in patients:
                 if _patient  == i.nom :
                     _patient = i
@@ -247,30 +271,18 @@ def medecin (_cabinet,_salle,_patient,_grille,_pharmacie):
             print(f"il ne reste plus personne, vous avez accueilli tous vos patients , vous avez gagné : {docteur.argent- 20000} € ajd !")
             print(f"voici un recap de la journéee ")
             print(display_patient())
+            print("")
             _patient.mourrir()
             print(display_patient())
+            print("")
+            _patient.guerir()
+            print("")
+            _patient.enterrer()
+            print(display_patient())
+            print("")
             return False
-
-
-# print(salle_attente.salle)
-# print(cabinet.salle)
-# docteur.recevoir(cabinet,salle_attente,sangoku)
-# print(salle_attente.salle)
-# print(cabinet.salle)
-# docteur.diagnostic(cabinet,sangoku)
-# docteur.get_payed(sangoku)
-# docteur.prescrire(sangoku,grille)
-
-# docteur.sortir(cabinet,sangoku,salle_attente)
-# sangoku.se_deplacer(salle_attente,pharmacie)
-# print(pharmacie.caisse,sangoku.argent)
-# print(sangoku.poche)
-# sangoku.prendre_payer(pharmacie,grille)
-# print(pharmacie.caisse,sangoku.argent)
-# print(sangoku.poche)
-# print(cimetierre.salle)
-
-medecin(cabinet,salle_attente,patients,grille,pharmacie)
+        
+main(cabinet,salle_attente,patients,grille,pharmacie)
 
 
 
