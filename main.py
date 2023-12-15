@@ -1,6 +1,7 @@
 import time
 import threading
 from tabulate import tabulate
+import random
 
 # ------------------- class ------------------------
 class Patients ():
@@ -39,6 +40,15 @@ class Patients ():
 
                     self.etat = "entrain de se soigner"
                     self.poche.append(i)
+                    
+    def mourrir(self):
+        for i in patients:
+            if i.etat == "mourrant...":
+                jour_meurt=random.randint(0, 100)
+                
+                print(f"Jour : {jour_meurt}")
+                print(f"{i.nom} : Je me sens pas très bien ...")
+                i.etat = "mort"
 
     def __repr__(self):
         return self.nom
@@ -237,8 +247,10 @@ def medecin (_cabinet,_salle,_patient,_grille,_pharmacie):
             print(f"il ne reste plus personne, vous avez accueilli tous vos patients , vous avez gagné : {docteur.argent- 20000} € ajd !")
             print(f"voici un recap de la journéee ")
             print(display_patient())
+            _patient.mourrir()
+            print(display_patient())
             return False
-            
+
 
 # print(salle_attente.salle)
 # print(cabinet.salle)
