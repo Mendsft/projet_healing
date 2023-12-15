@@ -21,6 +21,7 @@ class Patients ():
         
         for i in _grille :
             if self.maladie == i.maladie :
+                print(i.maladie)
                 print(display_traitment())
                 print(f"{_pharmacie.salle[0]} : Bonjour, je vois, je vais vous donner votre médoc qui est {i.nom}")
                 print(f"{_pharmacie.salle[0]} : ca vous fera {i.prix} € ")
@@ -28,14 +29,16 @@ class Patients ():
                 if self.argent < i.prix :
                     print(f"{_pharmacie.salle[0]} : ah désole vous avez pas assez d'argent ... ")
                     self.etat = "mourrant..."
-                else:
+                    
+                elif self.argent >= i.prix:
                     print(f"{self} : Voici svp !")
+                    # self.poche = i.nom
                     print(f"{_pharmacie.salle[0]} : Merci,passez une bonne journée")
                     self.argent -=i.prix
                     _pharmacie.caisse +=i.prix  
 
-                    self.poche.append(i)
                     self.etat = "entrain de se soigner"
+                    self.poche.append(i)
 
     def __repr__(self):
         return self.nom
@@ -127,11 +130,11 @@ class Medoc():
 # ------------------ Instanciation ----------------
 # personnage 
 
-ben = Patients("ben","mal indenté","malade",100)
-optimus = Patients("optimus","unsave","malade",200)
-sangoku = Patients("sangoku","404","malade",80)
-darthvader = Patients("darthvader","azmatique","malade",110)
-semicolon = Patients("semicolon","syntaxError","malade",60)
+ben = Patients("ben","mal indenté","malade",100,[])
+optimus = Patients("optimus","unsave","malade",200,[])
+sangoku = Patients("sangoku","404","malade",80,[])
+darthvader = Patients("darthvader","azmatique","malade",110,[])
+semicolon = Patients("semicolon","syntaxError","malade",60,[])
 chat = Chat("chat")
 docteur = Docteur("docteur","bonne santé","sain", 20000)
 pharmacien = Patients("pharmacien","","bonne santé",)
@@ -164,41 +167,55 @@ cimetierre = Lieu("cimetière",["Fossoyeur"])
 # miauler = threading.Thread(target= miauler)
 # miauler.start()
 def display_patient():
+    print("")
+    print("Liste des patients")
+    print("")
+    
     header = [["nom","maladie","poche","etats","argent"]]
     for i in patients:
-        content=[i.nom,i.maladie,i.poche,i.etat,i.argent]
+        content=[i.nom,i.maladie,i.poche,i.etat,f"{i.argent} €"]
         header.append(content)
-        
     table = tabulate(header,headers='firstrow',tablefmt='grid')
     return table
     
     
 def dislay_cabinet():
+    print("")
+    print("La salle du docteur")
+    print("")
+    
     header = [["nom","maladie","cabinet","Patient In","Patient ou "]]
     content=[cabinet.nom,cabinet.diagnostic,cabinet.salle,cabinet.patient_in,cabinet.patient_out]
     header.append(content)
-    
     ds_cabinet = tabulate(header,headers='firstrow',tablefmt='grid')
     return ds_cabinet
     
 def display_diagnostic ():
+    print("")
+    print("Liste diagnostic")
+    print("")
+    
     header = [["Maladie","Traitemnts"]]
     for i in grille :
-        content= [i.nom,i.maladie]
+        content= [i.maladie,i.nom]
         header.append(content)
     ds_diagnos = tabulate (header,headers='firstrow',tablefmt='grid')
     return ds_diagnos
 
 def display_traitment ():
+    print("")
+    print("Liste des traitements")
+    print("")
     header = [["Traitemnts","Prix"]]
     for i in grille :
-        content= [i.maladie,i.prix]
+        content= [i.maladie,f"{i.prix} €"]
         header.append(content)
     ds_diagnos = tabulate (header,headers='firstrow',tablefmt='grid')
     return ds_diagnos
 
 
 def medecin (_cabinet,_salle,_patient,_grille,_pharmacie):
+
     print(display_patient())
     while True :
         if len(_salle.salle) != 0 :
@@ -219,7 +236,7 @@ def medecin (_cabinet,_salle,_patient,_grille,_pharmacie):
         else:
             print(f"il ne reste plus personne, vous avez accueilli tous vos patients , vous avez gagné : {docteur.argent- 20000} € ajd !")
             print(f"voici un recap de la journéee ")
-            
+            print(display_patient())
             return False
             
 
