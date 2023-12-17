@@ -72,8 +72,7 @@ class Patients ():
                 i.maladie = ""
                 
     def __repr__(self):
-        return self.nom
-    
+        return self.nom   
 class Chat():
     def __init__(self,nom) :
         self.nom = nom
@@ -123,12 +122,12 @@ class Docteur (Patients):
         _cabinet.patient_out.append(_patient)
         _cabinet.patient_in.remove(_patient)
         _attente.salle.append(_patient)
-        print(dislay_cabinet())
+        _cabinet.patient_out.remove(_patient)
+        
         _cabinet.diagnostic = ""
 
     def __repr__(self):
-        return self.nom
-        
+        return self.nom     
 class Lieu ():
     def __init__(self,nom,salle = []):
         self.nom = nom
@@ -141,8 +140,7 @@ class Cabinet (Lieu):
         super().__init__(nom, salle)
         self.diagnostic = diagnostic
         self.patient_in = patient_in
-        self.patient_out = patient_out
-    
+        self.patient_out = patient_out   
 class Pharmacie (Lieu):
     def __init__(self, nom,medoc,caisse = float,salle=[]):
         super().__init__(nom, salle)
@@ -159,8 +157,6 @@ class Medoc():
         
     def __repr__(self):
         return self.nom
-        
-
 # ------------------ Instanciation ----------------
 # personnage 
 
@@ -194,18 +190,19 @@ cimetierre = Lieu("cimetière",["Fossoyeur"])
 
 # -------- Fonction ------
 # fonction miauler 
-def miauler ():
+def miauler1 ():
     while True :
-        time.sleep(5)
-        print("*miaouwwww*")
+        time.sleep(3)
+        print("*miaouwwww*\n")
+        
+
+    
 
 #chats :
-miauler = threading.Thread(target= miauler)
-# miauler.start()
-def printit():
-  threading.Timer(2.0, printit).start()
-  print ("Hello, World!")
+miauler = threading.Thread(target= miauler1,daemon=True)
 
+# miauler.start()
+  
 def display_patient():
     print("")
     print("Liste des patients")
@@ -255,7 +252,6 @@ def display_traitment ():
     ds_diagnos = tabulate (header,headers='firstrow',tablefmt='grid')
     return ds_diagnos
 
-            
 def main(_cabinet,_salle,_patient,_grille,_pharmacie):
 
     print(display_patient())
@@ -263,20 +259,18 @@ def main(_cabinet,_salle,_patient,_grille,_pharmacie):
     miauler.start()
     while True :
         if len(_salle.salle) != 0 :
-            _patient = input((f"Entrez le patient que vous voulez faire rentrer dans le cabinet : {_salle.salle} : "))
-
-
+            _patient = str(input((f"Entrez le patient que vous voulez faire rentrer dans le cabinet : {_salle.salle} : ")))
             for i in patients:
                 if _patient  == i.nom :
                     _patient = i
 
-            docteur.recevoir(_cabinet,salle_attente,_patient)
-            docteur.diagnostic(_cabinet,_patient)
-            docteur.get_payed(_patient)
-            docteur.prescrire(_patient,_grille)
-            docteur.sortir(_cabinet,_patient,_salle)
-            _patient.se_deplacer(_salle,_pharmacie)
-            _patient.prendre_payer(_pharmacie,_grille)
+                    docteur.recevoir(_cabinet,salle_attente,_patient)
+                    docteur.diagnostic(_cabinet,_patient)
+                    docteur.get_payed(_patient)
+                    docteur.prescrire(_patient,_grille)
+                    docteur.sortir(_cabinet,_patient,_salle)
+                    _patient.se_deplacer(_salle,_pharmacie)
+                    _patient.prendre_payer(_pharmacie,_grille)
 
         else:
             print(f"il ne reste plus personne, vous avez accueilli tous vos patients , vous avez gagné : {docteur.argent- 20000} € ajd !")
@@ -291,8 +285,9 @@ def main(_cabinet,_salle,_patient,_grille,_pharmacie):
             _patient.enterrer()
             print(display_patient())
             print("")
+
             return False
-        
+
 main(cabinet,salle_attente,patients,grille,pharmacie)
 
 
