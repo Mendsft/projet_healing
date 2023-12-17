@@ -46,7 +46,7 @@ class Patients ():
     def mourrir(self):
         for i in patients:
             if i.etat == "mourrant...":
-                jour_meurt=random.randint(0, 100)
+                jour_meurt=random.randint(0, 20)
                 
                 print(f"Jour : {jour_meurt}")
                 print(f"{i.nom} : Je me sens pas très bien ... ")
@@ -60,6 +60,8 @@ class Patients ():
                 print(f"Jour : {jour_gueris}")
                 print(f"{i.nom} : Je me sens extremement biengg")
                 i.etat = "guéris"
+                i.poche =[]
+                i.maladie = ""
     
     def enterrer(self):
         for i in patients :
@@ -82,11 +84,13 @@ class Docteur (Patients):
         super().__init__(nom, maladie, etat, argent, poche)
     
     def recevoir (self,_cabinet,_attente,_patient):
+
         _cabinet.salle.append(_patient)
         _attente.salle.remove(_patient)
         _cabinet.patient_in.append(_patient)
         print(f"bonjour très cher {_patient} ! ")
         
+    # rajoute ligne par ligne dans le display diagnostic
     def diagnostic(self,_cabinet,_patient):
         print(f"{docteur} : je vais vous diagnostiquer ! ")
         print(f"{_cabinet.patient_in[0]} : d'accord docteur !")
@@ -114,6 +118,7 @@ class Docteur (Patients):
                 
     def sortir(self,_cabinet,_patient,_attente):
         print(f"{docteur} : Bon je pense que nous en avons fini, je vous souhaite bon rétablissement et oubliez pas de prendre votre traitement à la pharmacie ! ")
+        print(dislay_cabinet())
         _cabinet.salle.remove(_patient)
         _cabinet.patient_out.append(_patient)
         _cabinet.patient_in.remove(_patient)
@@ -186,19 +191,20 @@ cabinet = Cabinet("cabinet ","",[docteur,chat])
 pharmacie = Pharmacie("pharmacie",grille,100,["pharmacienne"])
 cimetierre = Lieu("cimetière",["Fossoyeur"])
 
-# # fonction miauler 
-# def miauler ():
-#     for i in range (100):
-#         time.sleep(2)
-#         print("*miaouwwww*")
 
-# #chats :
-# miauler = threading.Thread(target= miauler)
+# -------- Fonction ------
+# fonction miauler 
+def miauler ():
+    while True :
+        time.sleep(5)
+        print("*miaouwwww*")
+
+#chats :
+miauler = threading.Thread(target= miauler)
 # miauler.start()
-# def verif (_input):
-
-            
-        
+def printit():
+  threading.Timer(2.0, printit).start()
+  print ("Hello, World!")
 
 def display_patient():
     print("")
@@ -217,9 +223,12 @@ def dislay_cabinet():
     print("La salle du docteur")
     print("")
     
-    header = [["nom","maladie","cabinet","Patient In","Patient ou "]]
+    header = [["nom","maladie","cabinet","Patient In","Patient out "]]
+
+
     content=[cabinet.nom,cabinet.diagnostic,cabinet.salle,cabinet.patient_in,cabinet.patient_out]
     header.append(content)
+        
     ds_cabinet = tabulate(header,headers='firstrow',tablefmt='grid')
     return ds_cabinet
     
@@ -246,15 +255,17 @@ def display_traitment ():
     ds_diagnos = tabulate (header,headers='firstrow',tablefmt='grid')
     return ds_diagnos
 
-
+            
 def main(_cabinet,_salle,_patient,_grille,_pharmacie):
 
     print(display_patient())
     print("")
+    miauler.start()
     while True :
         if len(_salle.salle) != 0 :
+            _patient = input((f"Entrez le patient que vous voulez faire rentrer dans le cabinet : {_salle.salle} : "))
 
-            _patient = str(input(f"Entrez le patient que vous voulez faire rentrer dans le cabinet : {_salle.salle} : "))
+
             for i in patients:
                 if _patient  == i.nom :
                     _patient = i
