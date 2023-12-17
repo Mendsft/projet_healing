@@ -66,7 +66,7 @@ class Patients ():
     def enterrer(self):
         for i in patients :
             if i.etat == "mort":
-                print(f"c'était qln un de bien .... *bruit de pelle ")
+                print(f"c'était qln un de bien .... *bruit de pelle * RIP : {i.nom} * ")
                 i.etat = "enterré"
                 i.argent = 0
                 i.maladie = ""
@@ -194,14 +194,8 @@ def miauler1 ():
     while True :
         time.sleep(3)
         print("*miaouwwww*\n")
-        
-
-    
-
 #chats :
 miauler = threading.Thread(target= miauler1,daemon=True)
-
-# miauler.start()
   
 def display_patient():
     print("")
