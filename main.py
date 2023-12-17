@@ -63,13 +63,14 @@ class Patients ():
                 i.poche =[]
                 i.maladie = ""
     
-    def enterrer(self):
+    def enterrer(self,_cimetiere):
         for i in patients :
             if i.etat == "mort":
                 print(f"c'était qln un de bien .... *bruit de pelle * RIP : {i.nom} * ")
                 i.etat = "enterré"
                 i.argent = 0
                 i.maladie = ""
+                _cimetiere.salle.append(i)
                 
     def __repr__(self):
         return self.nom   
@@ -122,6 +123,7 @@ class Docteur (Patients):
         _cabinet.patient_out.append(_patient)
         _cabinet.patient_in.remove(_patient)
         _attente.salle.append(_patient)
+        print(dislay_cabinet())
         _cabinet.patient_out.remove(_patient)
         
         _cabinet.diagnostic = ""
@@ -276,7 +278,10 @@ def main(_cabinet,_salle,_patient,_grille,_pharmacie):
             print("")
             _patient.guerir()
             print("")
-            _patient.enterrer()
+            _patient.enterrer(cimetierre)
+            print("")
+            print(cimetierre.salle)
+            print("")
             print(display_patient())
             print("")
 
