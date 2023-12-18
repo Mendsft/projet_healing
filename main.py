@@ -4,7 +4,7 @@ from tabulate import tabulate
 import random
 
 # ------------------- class ------------------------
-class Patients ():
+class Patients():
     def __init__(self,nom,maladie,etat,argent=float,poche=[]):
         self.nom = nom
         self.maladie = maladie
@@ -79,10 +79,10 @@ class Chat():
         self.nom = nom
     def __repr__(self):
         return self.nom
-class Docteur (Patients):
+class Docteur(Patients):
     def __init__(self, nom, maladie, etat, argent=float, poche=[]):
         super().__init__(nom, maladie, etat, argent, poche)
-    
+
     def recevoir (self,_cabinet,_attente,_patient):
 
         _cabinet.salle.append(_patient)
@@ -137,16 +137,16 @@ class Lieu ():
         
     def __repr__(self):
         return self.nom
-class Cabinet (Lieu):
+class Cabinet(Lieu):
     def __init__(self, nom,diagnostic =[] ,salle=[],patient_in =[],patient_out = []):
         super().__init__(nom, salle)
         self.diagnostic = diagnostic
         self.patient_in = patient_in
         self.patient_out = patient_out   
-class Pharmacie (Lieu):
+class Pharmacie(Lieu):
     def __init__(self, nom,medoc,caisse = float,salle=[]):
         super().__init__(nom, salle)
-        self.medoc= medoc
+        self.medoc = medoc
         self.caisse = caisse
         
     def __repr__(self):
@@ -219,13 +219,13 @@ def dislay_cabinet():
     header = [["nom","maladie","cabinet","Patient In","Patient out "]]
 
 
-    content=[cabinet.nom,cabinet.diagnostic,cabinet.salle,cabinet.patient_in,cabinet.patient_out]
+    content = [cabinet.nom,cabinet.diagnostic,cabinet.salle,cabinet.patient_in,cabinet.patient_out]
     header.append(content)
         
     ds_cabinet = tabulate(header,headers='firstrow',tablefmt='grid')
     return ds_cabinet
     
-def display_diagnostic ():
+def display_diagnostic():
     print("")
     print("Liste diagnostic")
     print("")
@@ -237,7 +237,7 @@ def display_diagnostic ():
     ds_diagnos = tabulate (header,headers='firstrow',tablefmt='grid')
     return ds_diagnos
 
-def display_traitment ():
+def display_traitment():
     print("")
     print("Liste des traitements")
     print("")
@@ -288,7 +288,3 @@ def main(_cabinet,_salle,_patient,_grille,_pharmacie):
             return False
 
 main(cabinet,salle_attente,patients,grille,pharmacie)
-
-
-
-
